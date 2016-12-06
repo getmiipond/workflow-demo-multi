@@ -24,6 +24,7 @@ git push deis master
 
 # setup the database
 deis run bundle exec rake db:migrate
+
+# scale up worker count
+deis scale sidekiq=1
 ```
-
-
