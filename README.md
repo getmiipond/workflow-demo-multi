@@ -1,24 +1,23 @@
-# README
+## Setup
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+```
+# install postgres into namespace `services
+helm install --name postgres --namespace services kubernetes-charts/postgresql --set postgresUser=demo-app,postgresPassword=secret,postgresDatabase=demo-app
 
-Things you may want to cover:
+# create application in workflow
+deis create demo-app
 
-* Ruby version
+# configure application to use postgres
+deis config:set DATABASE_URL="postgres://demo-app:secret@postgres-postgresql.services.svc.cluster.local/demo-app"
 
-* System dependencies
+# configure application to use custom buildpack
+deis config:set BUILDPACK_URL="https://github.com/slack/heroku-buildpack-ruby.git#env-from-files"
 
-* Configuration
+# push the application
+git push deis master
 
-* Database creation
+# setup the database
+deis run bundle exec rake db:migrate
+```
 
-* Database initialization
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
